@@ -16,6 +16,7 @@ public class MovingWall : MonoBehaviour
 
     void Start()
     {
+        NextTarget();
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class MovingWall : MonoBehaviour
 
         transform.Translate(dir * moveSpeed * Time.deltaTime);
         dist = Vector3.Distance(transform.position, wayPoints[nextTarget]);
-        if (dist <= 0.1)
+        if (dist <= 0.2)
         {
             NextTarget();
         }

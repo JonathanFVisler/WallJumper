@@ -10,9 +10,19 @@ public interface LevelManagerStrategy
 
     float GetScore();
 
-    Dictionary<string,float> GetHighScores();
+    float GetHighScore();
+
+    void SaveScore();
 
     void PlayLevel();
+
+    void CoinPickup();
+
+    void EndLevel();
+
+    void FailLevel();
+
+    void DisplayLevelEndMenu();
 }
 
 public enum BeatDegree {

@@ -4890,6 +4890,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4991,6 +4992,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5085,12 +5087,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9567c230b5524ca4a9e06d98225271c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 30
+  jumpHeight: 15
   moveSpeed: 300
   canJump: 1
-  gameManager: {fileID: 0}
   coinAudio: {fileID: 5119088761799674980}
   jumpAudio: {fileID: 5119088761050203524}
+  canMove: 1
+  levelmanager: {fileID: 0}
 --- !u!120 &5119088761197976905
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -5105,6 +5108,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

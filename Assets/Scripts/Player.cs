@@ -5,34 +5,55 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float jumpHeight = 10;
-    public float moveSpeed = 10;
     public bool canJump = true;
     Rigidbody2D rb;
     LineRenderer lr;
-    public GameObject gameManager;
+    //public GameObject gameManager;
 
     public AudioSource coinAudio;
     public AudioSource jumpAudio;
 
     string deviceType;
 
+    public bool canMove = true;
+
+    [SerializeField]
+    public ParticleSystem deathParticals;
+
+
+
+    [SerializeField]
+    GameObject levelmanager;
+    LevelManagerStrategy levelManager;
+
     void Start()
     {
         rb = transform.GetComponent<Rigidbody2D>();
         lr = transform.GetComponent<LineRenderer>();
-        gameManager = GameObject.Find("GameManager");
-        deviceType = gameManager.GetComponent<GameManager>().deviceType;
-        coinAudio.volume = gameManager.GetComponent<GameManager>().soundEffectVolumne;
-        jumpAudio.volume = gameManager.GetComponent<GameManager>().soundEffectVolumne;
+        coinAudio.volume = jumpAudio.volume = Memory.EffectVolume;
+        
+        if(levelmanager.GetComponent<AllCoinCollectLevelManager>() != null) 
+        {
+            levelManager = levelmanager.GetComponent<AllCoinCollectLevelManager>(); 
+        }
+        else if(levelmanager.GetComponent<OneCoinAtATimeLevelManager>() != null) 
+        {
+            levelManager = levelmanager.GetComponent<OneCoinAtATimeLevelManager>(); 
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpHeight * Time.deltaTime, ForceMode2D.Impulse);
+        }*/
+        if (!canMove)
+        {
+            return;
         }
+
         if (canJump)
         {
             Vector2 mousePos = Vector2.zero;
@@ -73,20 +94,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Death()
+    {
+        StopMoving();
+        this.GetComponent<SpriteRenderer>().enabled = false;
+        deathParticals.Play();
+        Invoke("DeathHelperMethod", 0.5f);
+    }
+
+    void DeathHelperMethod()
+    {
+        levelManager.FailLevel();
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Wall")
         {
-            rb.velocity = Vector2.zero;
-            rb.drag = 10;
-            //lr.enabled = true;
+            //rb.velocity = Vector2.zero;
+            //rb.drag = 10;
             canJump = true;
         }
         else if(collision.transform.tag == "Floor")
         {
-            rb.drag = 1;
+            //rb.drag = 1;
             //lr.enabled = true;
             canJump = true;
+        }
+        else if(collision.transform.tag == "Death")
+        {
+            Death();
         }
     }
 
@@ -110,10 +147,17 @@ public class Player : MonoBehaviour
     {
         if(collider.transform.tag == "Coin")
         {
-            gameManager.GetComponent<GameManager>().CoinPickup();
+            levelManager.CoinPickup();
             Destroy(collider.gameObject);
             coinAudio.Play();
             canJump = true;
         }
+    }
+
+    public void StopMoving()
+    {
+        jumpHeight = 0;
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = 0;
     }
 }

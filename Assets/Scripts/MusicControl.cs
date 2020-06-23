@@ -10,7 +10,6 @@ public class MusicControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
-        audioSource.volume = gameManager.GetComponent<GameManager>().musicVolumne;
+        audioSource.volume = Memory.MusicVolume;
     }
 }
